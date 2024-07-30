@@ -1,0 +1,21 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "as608.h": "c",
+        "main.h": "c",
+        "hc05.h": "c",
+        "servo.h": "c",
+        "tim.h": "c",
+        "lcd_init.h": "c",
+        "spi.h": "c",
+        "rc522.h": "c",
+        "stdio.h": "c",
+        "delay.h": "c",
+        "uart_redefine.h": "c",
+        "key.h": "c",
+        "usart.h": "c",
+        "hcsr04.h": "c",
+        "stm32f1xx_hal.h": "c",
+        "led.h": "c"
+    }
+}
