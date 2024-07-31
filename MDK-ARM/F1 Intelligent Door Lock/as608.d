@@ -35,3 +35,11 @@ f1 intelligent door lock\as608.o: ../Core/Inc/usart.h
 f1 intelligent door lock\as608.o: ../Core/Inc/main.h
 f1 intelligent door lock\as608.o: D:\Keil\ARM Start\ARM\ARMCC\Bin\..\include\string.h
 f1 intelligent door lock\as608.o: D:\Keil\ARM Start\ARM\ARMCC\Bin\..\include\stdio.h
+f1 intelligent door lock\as608.o: ../SDK/LCD/lcd.h
+f1 intelligent door lock\as608.o: ../SDK/LCD/lcd_init.h
+f1 intelligent door lock\as608.o: ../Core/Inc/spi.h
+f1 intelligent door lock\as608.o: ../SDK/KEY/Key.h
+f1 intelligent door lock\as608.o: ../Core/Inc/gpio.h
+f1 intelligent door lock\as608.o: ../SDK/Servo/Servo.h
+f1 intelligent door lock\as608.o: ../SDK/AS608/AS608.h
+f1 intelligent door lock\as608.o: ../SDK/LED/LED.h

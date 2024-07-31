@@ -36,4 +36,12 @@ f1 intelligent door lock\stm32f1xx_it.o: ../SYSTEM/Delay.h
 f1 intelligent door lock\stm32f1xx_it.o: ../Core/Inc/usart.h
 f1 intelligent door lock\stm32f1xx_it.o: D:\Keil\ARM Start\ARM\ARMCC\Bin\..\include\string.h
 f1 intelligent door lock\stm32f1xx_it.o: D:\Keil\ARM Start\ARM\ARMCC\Bin\..\include\stdio.h
+f1 intelligent door lock\stm32f1xx_it.o: ../SDK/LCD/lcd.h
+f1 intelligent door lock\stm32f1xx_it.o: ../SDK/LCD/lcd_init.h
+f1 intelligent door lock\stm32f1xx_it.o: ../Core/Inc/spi.h
+f1 intelligent door lock\stm32f1xx_it.o: ../SDK/KEY/Key.h
+f1 intelligent door lock\stm32f1xx_it.o: ../Core/Inc/gpio.h
+f1 intelligent door lock\stm32f1xx_it.o: ../SDK/Servo/Servo.h
+f1 intelligent door lock\stm32f1xx_it.o: ../SDK/AS608/AS608.h
+f1 intelligent door lock\stm32f1xx_it.o: ../SDK/LED/LED.h
 f1 intelligent door lock\stm32f1xx_it.o: ../SDK/BLUETOOTH/HC05.h

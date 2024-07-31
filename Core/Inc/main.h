@@ -71,6 +71,8 @@ void Door_Error(void);
 #define ECHO_GPIO_Port GPIOA
 #define SPI_NSS_Pin GPIO_PIN_4
 #define SPI_NSS_GPIO_Port GPIOA
+#define LCD_RES_Pin GPIO_PIN_4
+#define LCD_RES_GPIO_Port GPIOC
 #define LCD_DC_Pin GPIO_PIN_5
 #define LCD_DC_GPIO_Port GPIOC
 #define LCD_BLK_Pin GPIO_PIN_0
@@ -100,6 +102,7 @@ void Door_Error(void);
 
 /* USER CODE BEGIN Private defines */
 extern uint32_t AS608Addr;
+extern uint8_t Key_Change_num;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

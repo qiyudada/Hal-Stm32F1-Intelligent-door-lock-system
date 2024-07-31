@@ -1,7 +1,7 @@
 #include "AS608.h"
 
 uint32_t AS608Addr = 0XFFFFFFFF;
-uint8_t AS608_USART_RX_BUF[USART2_MAX_RECV_LEN] = {0};											// 接收缓冲,最大USART2_MAX_RECV_LEN个字节.
+uint8_t AS608_USART_RX_BUF[USART2_MAX_RECV_LEN] = {0};										// 接收缓冲,最大USART2_MAX_RECV_LEN个字节.
 volatile uint8_t USART2_RX_STA = 0;															// 串口是否接收到数据
 uint8_t Get_Device_Code[10] = {0x01, 0x00, 0x07, 0x13, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1b}; // 口令验证
 SysPara AS608Para = {0};																	// 指纹模块AS608参数
@@ -745,12 +745,13 @@ void ShowErrMessage(uint8_t ensure)
  @note 		input fingerprint
  @return  	None
 **********************************************************************************/
-void press_FR(void)
+uint16_t Press_FR(void)
 {
 	SearchResult seach;
 	uint8_t ensure;
 	char str[20];
-	while (1)
+	uint32_t AS608_Timeout = 2000000;
+	while (AS608_Timeout--)
 	{
 		ensure = PS_GetImage();
 		if (ensure == 0x00) // 获取图像成功
@@ -764,12 +765,14 @@ void press_FR(void)
 					printf("Verify fingerprint successfully\r\n");
 					sprintf(str, "ID:%d Scores:%d ", seach.pageID, seach.mathscore);
 					printf("%s\r\n", str);
-					Delay_ms(1500);
+					Delay_ms(500);
+					return seach.mathscore;
 				}
 				else
 				{
 					printf("Verify failled\r\n");
-					Delay_ms(1500);
+					Delay_ms(500);
+					return 0;
 				}
 			}
 			else
@@ -780,4 +783,223 @@ void press_FR(void)
 	}
 }
 
+/*********************************************************************************
+ @name  	Add_FR
+ @param 	void
+ @note 		Add fingerprint
+ @return  	None
+**********************************************************************************/
+void Add_FR(void)
+{
+	uint8_t i=0, ensure, processnum = 0;
+	uint8_t ID_NUM = 0;
+	while (1)
+	{
+		switch (processnum)
+		{
+		case 0:
+			i++;
+			LCD_Fill(-10, -10, 240, 240, WHITE);
+			LCD_ShowString(0, 64, "Logging FP", BLACK, WHITE, LCD_8x16, 0);
+			printf("Please Press your finger\r\n");
+			ensure = PS_GetImage();
+			if (ensure == 0x00)
+			{
+				ensure = PS_GenChar(CharBuffer1); // 生成特征
+				if (ensure == 0x00)
+				{
+					LCD_Fill(-10, -10, 240, 240, WHITE);
+					LCD_ShowString(0, 64, "Normal FP", BLACK, WHITE, LCD_8x16, 0);
+					printf("Normal Fingerprint\r\n");
+					i = 0;
+					processnum = 1; // 跳到第二步
+				}
+				else
+				{
+					LCD_Fill(-10, -10, 240, 240, WHITE);
+					LCD_ShowString(0, 64, "Error_1", BLACK, WHITE, LCD_8x16, 0);
+					ShowErrMessage(ensure);
+				}
+			}
+			else
+			{
+				LCD_Fill(-10, -10, 240, 240, WHITE);
+				LCD_ShowString(0, 64, "Error_1", BLACK, WHITE, LCD_8x16, 0);
+				ShowErrMessage(ensure);
+			}
+			break;
+		case 1:
+			i++;
+			LCD_Fill(-10, -10, 240, 240, WHITE);
+			LCD_ShowString(0, 64, "Logging again", BLACK, WHITE, LCD_8x16, 0);
+			printf("Press again\r\n");
+			ensure = PS_GetImage();
+			if (ensure == 0x00)
+			{
+				ensure = PS_GenChar(CharBuffer2); // 生成特征
+				if (ensure == 0x00)
+				{
 
+					LCD_Fill(-10, -10, 240, 240, WHITE);
+					LCD_ShowString(0, 64, "Normal FP", BLACK, WHITE, LCD_8x16, 0);
+					printf("Normal Fingerprint\r\n");
+					i = 0;
+					processnum = 2; // 跳到第三步
+				}
+				else
+				{
+					LCD_Fill(-10, -10, 240, 240, WHITE);
+					LCD_ShowString(0, 64, "Error_2", BLACK, WHITE, LCD_8x16, 0);
+					ShowErrMessage(ensure);
+				}
+			}
+			else
+			{
+				LCD_Fill(-10, -10, 240, 240, WHITE);
+				LCD_ShowString(0, 64, "Error_2", BLACK, WHITE, LCD_8x16, 0);
+				ShowErrMessage(ensure);
+			}
+			break;
+
+		case 2:
+			LCD_Fill(-10, -10, 240, 240, WHITE);
+			LCD_ShowString(0, 64, "Contrasting....", BLACK, WHITE, LCD_8x16, 0);
+			printf("Contrast with two samples\r\n");
+			ensure = PS_Match();
+			if (ensure == 0x00)
+			{
+				LCD_Fill(-10, -10, 240, 240, WHITE);
+				LCD_ShowString(0, 64, "Compare right", BLACK, WHITE, LCD_8x16, 0);
+				printf("Compare successfully\r\n");
+				processnum = 3; // 跳到第四步
+			}
+			else
+			{
+				LCD_Fill(-10, -10, 240, 240, WHITE);
+				LCD_ShowString(0, 64, "Compare failed", BLACK, WHITE, LCD_8x16, 0);
+				printf("Compare failedly\r\n");
+				ShowErrMessage(ensure);
+				i = 0;
+				processnum = 0; // 跳回第一步
+			}
+			Delay_ms(3000);
+			break;
+
+		case 3:
+			LCD_Fill(-10, -10, 240, 240, WHITE);
+			LCD_ShowString(0, 64, "Generating...", BLACK, WHITE, LCD_8x16, 0);
+			printf("Generate the template\r\n");
+			Delay_ms(3000);
+			ensure = PS_RegModel();
+			if (ensure == 0x00)
+			{
+				LCD_Fill(-10, -10, 240, 240, WHITE);
+				LCD_ShowString(0, 64, "Generate right", BLACK, WHITE, LCD_8x16, 0);
+				printf("Generate the template successfully\r\n");
+				processnum = 4; // 跳到第五步
+			}
+			else
+			{
+				LCD_Fill(-10, -10, 240, 240, WHITE);
+				LCD_ShowString(0, 64, "Generate failed", BLACK, WHITE, LCD_8x16, 0);
+				processnum = 0;
+				ShowErrMessage(ensure);
+			}
+			Delay_ms(3000);
+			break;
+
+		case 4:
+			printf("Default ID is 6 \r\n");
+			ID_NUM = 6;
+			ensure = PS_StoreChar(CharBuffer2, ID_NUM); // 储存模板
+			if (ensure == 0x00)
+			{
+				LCD_Fill(-10, -10, 240, 240, WHITE);
+				LCD_ShowString(0, 64, "Add successful", BLACK, WHITE, LCD_8x16, 0);
+				printf("Add Fingerprint successfully\r\n");
+				Delay_ms(3000);
+				LCD_Fill(-10, -10, 240, 240, WHITE);
+				return;
+			}
+			else
+			{
+				LCD_Fill(-10, -10, 240, 240, WHITE);
+				LCD_ShowString(0, 64, "Add failed", BLACK, WHITE, LCD_8x16, 0);
+				processnum = 0;
+				ShowErrMessage(ensure);
+			}
+			break;
+		}
+		Delay_ms(1000);
+		if (i == 5) // 超过5次没有按手指则退出
+		{
+			LCD_Fill(-10, -10, 240, 240, WHITE);
+			LCD_ShowString(24, 64, "Timeout!", BLACK, WHITE, LCD_8x16, 0);
+			Delay_ms(1000);
+			LCD_Fill(-10, -10, 240, 240, WHITE);
+			break;
+		}
+	}
+}
+
+/*********************************************************************************
+ @name  	Del_FR
+ @param 	void
+ @note 		Delete single fingerprint
+ @return  	None
+**********************************************************************************/
+void Del_FR(void)
+{
+	uint8_t ensure;
+	uint16_t ID_NUM = 0;
+	printf("Start to delete single fingerprint\r\n");
+	ID_NUM = 1;
+	ensure = PS_DeletChar(ID_NUM, 1); // 删除单个指纹
+	if (ensure == 0)
+	{
+		printf("Delete successfully\r\n");
+	}
+	else
+		ShowErrMessage(ensure);
+	Delay_ms(1500);
+}
+/*********************************************************************************
+ @name  	Del_FR
+ @param 	void
+ @note 		Delete gross fingerprint
+ @return  	None
+**********************************************************************************/
+void Del_FR_Lib(void)
+{
+	uint8_t ensure;
+	printf("Start to delete gross fingerprint\r\n");
+	ensure = PS_Empty(); // 清空指纹库
+	if (ensure == 0)
+	{
+		printf("Clear successfully\r\n");
+	}
+	else
+		ShowErrMessage(ensure);
+	Delay_ms(500);
+}
+/*********************************************************************************
+ @name  	FP_Feedback
+ @param 	void
+ @note 		Using Fingerprint to open door
+ @return  	None
+**********************************************************************************/
+void FP_Feedback(void)
+{
+	LCD_Fill(-10, -10, 240, 240, WHITE);
+	LCD_ShowString(0, 64, "Please Press:", BLACK, WHITE, LCD_8x16, 0);
+	if (Press_FR() >= 100)
+	{
+		Door_Open();
+		LCD_Fill(-10, -10, 240, 240, WHITE);
+	}
+	else
+	{
+		Door_Error();
+		LCD_Fill(-10, -10, 240, 240, WHITE);
+	}
+}

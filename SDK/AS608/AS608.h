@@ -7,6 +7,9 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "lcd.h"
+#include "Key.h"
+
 #define CharBuffer1 0x01
 #define CharBuffer2 0x02
 #define AS608_UART huart2
@@ -16,6 +19,7 @@
 #define AS608_UART_MAX_RECV_LEN USART2_MAX_RECV_LEN
 #define AS608_USART_RX_BUF USART2_RX_BUF
 #define AS608_USART_RX_STA USART2_RX_STA
+#define FP_Touch_Read HAL_GPIO_ReadPin(FP_Touch_GPIO_Port, FP_Touch_Pin)
 
 extern uint8_t AS608_USART_RX_BUF[USART2_MAX_RECV_LEN];
 extern volatile uint8_t USART2_RX_STA;
@@ -76,6 +80,14 @@ const char *EnsureMessage(uint8_t ensure); // 确认码错误信息解析
 
 void ShowErrMessage(uint8_t ensure);
 
-void press_FR(void);
+uint16_t Press_FR(void);
+
+void Add_FR(void);
+
+void Del_FR(void);
+
+void Del_FR_Lib(void);
+
+void FP_Feedback(void);
 
 #endif
