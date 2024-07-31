@@ -56,14 +56,14 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+static uint8_t Task;
 uint8_t Keynum;
 float Servo_Angle;
 uint8_t Card_Type1[2];
 uint8_t Card_ID[4];
-uint8_t Card_KEY[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}; //{0x11,0x11,0x11,0x11,0x11,0x11}; 
+uint8_t Card_KEY[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}; //{0x11,0x11,0x11,0x11,0x11,0x11};
 uint8_t Card_Data[16];
 uint8_t status;
-uint8_t task = 0;
 uint16_t cardType;
 uint8_t readUid[5];
 
@@ -77,7 +77,39 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void Door_Open(void)
+{
+  LED1_OFF();
+  LED2_OFF();
+  LED3_ON();
+  Delay_ms(500);
+  LCD_Fill(-10, -10, 240, 240, WHITE);
+  LCD_ShowString(20, 64, "Door Open", WHITE, BLACK, LCD_8x16, 0);
+  Servo_OpenDoor();
+  Delay_ms(5000);
+}
+void Door_Error(void)
+{
+  LED1_ON();
+  LED2_OFF();
+  LED3_OFF();
+  Delay_ms(500);
+  LCD_Fill(-10, -10, 240, 240, WHITE);
+  LCD_ShowString(14, 64, "Confirm Error", WHITE, BLACK, LCD_8x16, 0);
+  Delay_ms(1000);
+}
 
+void Door_Close(void)
+{
+  LED1_OFF();
+  LED2_ON();
+  LED3_OFF();
+  Delay_ms(500);
+  //LCD_Fill(-10, -10, 240, 240, WHITE);
+  LCD_ShowString(20, 64, "Door Close", WHITE, BLACK, LCD_8x16, 0);
+  Servo_CloseDoor();
+  Delay_ms(20);
+}
 /* USER CODE END 0 */
 
 /**
@@ -88,7 +120,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -152,8 +184,24 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    if (Key_GetNum())
+    {
+      Task = 1;
+    }
+    switch (Task)
+    {
+    case 1:
+      KEY_FeedBack(Initation_PS);
+      Task = 0;
+      // HCSR04_Detect();
+      break;
+
+    default:
+      Door_Close();
+      break;
+    }
     /* USER CODE END WHILE */
-    
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

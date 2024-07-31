@@ -53,7 +53,9 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void Door_Open(void);
+void Door_Close(void);
+void Door_Error(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

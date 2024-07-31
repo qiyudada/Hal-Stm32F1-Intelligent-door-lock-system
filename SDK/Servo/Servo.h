@@ -12,5 +12,7 @@ void Servo_Init(void);
 void Servo_SetAngle(float Angle);
 void Servo_Control(uint16_t angle);
 void Servo_TEST(void);
+void Servo_CloseDoor(void);
+void Servo_OpenDoor(void);
 
 #endif

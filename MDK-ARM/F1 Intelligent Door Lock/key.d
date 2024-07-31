@@ -39,3 +39,6 @@ f1 intelligent door lock\key.o: ../SYSTEM/Delay.h
 f1 intelligent door lock\key.o: ../SDK/AS608/AS608.h
 f1 intelligent door lock\key.o: ../Core/Inc/usart.h
 f1 intelligent door lock\key.o: ../SDK/LED/LED.h
+f1 intelligent door lock\key.o: ../SDK/LCD/lcd.h
+f1 intelligent door lock\key.o: ../SDK/LCD/lcd_init.h
+f1 intelligent door lock\key.o: ../Core/Inc/spi.h

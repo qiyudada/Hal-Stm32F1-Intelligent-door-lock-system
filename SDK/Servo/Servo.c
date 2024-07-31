@@ -25,3 +25,13 @@ void Servo_TEST(void)
 	__HAL_TIM_SET_COMPARE(&SERVO_TIMER, SERVO_CHANNEL, 250); // 相当于一个周期内�?20ms）有2.5ms高脉
 	Delay_ms(i);
 }
+
+void Servo_CloseDoor(void)
+{
+	__HAL_TIM_SET_COMPARE(&SERVO_TIMER, SERVO_CHANNEL, 50); 
+}
+
+void Servo_OpenDoor(void)
+{
+	__HAL_TIM_SET_COMPARE(&SERVO_TIMER, SERVO_CHANNEL, 250); 
+}

@@ -43,7 +43,7 @@ f1 intelligent door lock\main.o: D:\Keil\ARM Start\ARM\ARMCC\Bin\..\include\stdi
 f1 intelligent door lock\main.o: D:\Keil\ARM Start\ARM\ARMCC\Bin\..\include\string.h
 f1 intelligent door lock\main.o: ../SDK/Servo/Servo.h
 f1 intelligent door lock\main.o: ../SDK/AS608/AS608.h
-f1 intelligent door lock\main.o: ../SDK/LCD/LCD.h
+f1 intelligent door lock\main.o: ../SDK/LCD/lcd.h
 f1 intelligent door lock\main.o: ../SDK/LCD/lcd_init.h
 f1 intelligent door lock\main.o: ../SDK/RC522/RC522.h
 f1 intelligent door lock\main.o: ../SDK/HRSR04/HCSR04.h

@@ -53,5 +53,6 @@ void HCSR04_TEST(void);
 float KalmanFilter(Kalman *P, float Input);
 void Kalman_Init(float LastP, float Optimized_X, float Kg, float Q, float R);
 void HCSR04_Kalman_TEST(void);
+void HCSR04_Detect(void);
 
 #endif

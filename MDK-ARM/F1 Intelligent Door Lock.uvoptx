@@ -155,18 +155,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>3613</LineNumber>
+          <LineNumber>68</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134235452</Address>
+          <Address>134240870</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c</Filename>
+          <Filename>..\SDK\KEY\Key.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F1_Intelligent_Door_Lock\../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c\3613</Expression>
+          <Expression>\\F1_Intelligent_Door_Lock\../SDK/KEY/Key.c\68</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -179,6 +179,16 @@
           <count>1</count>
           <WinNumber>1</WinNumber>
           <ItemText>USART2_RX_STA</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Key_Input</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Input_PS</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -660,7 +670,7 @@
 
   <Group>
     <GroupName>KEY</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

@@ -179,11 +179,19 @@ void HCSR04_TEST(void)
  *************************************************/
 void HCSR04_Kalman_TEST(void)
 {
-	//Kalman_Init(1,0,0,0,0.01); put it in Initation space
+	// Kalman_Init(1,0,0,0,0.01); put it in Initation space
 	float distance = Hcsr04Read();
 	printf("distance:%.1f cm\r\n", distance);
-	distance=KalmanFilter(&Ultuarsonic_Kalman, distance);
+	distance = KalmanFilter(&Ultuarsonic_Kalman, distance);
 	printf("KalmanFilter:%.1f cm\r\n", distance);
 	Hcsr04Start();
 	Delay_ms(1000);
+}
+
+void HCSR04_Detect(void)
+{
+	while ((Hcsr04Read() < 20))
+	{
+		printf("People detected!\r\n");
+	}
 }
