@@ -792,7 +792,7 @@ void PCD_TEST(uint8_t *readUid)
 {
     if (!readCard(readUid, NULL))
     {
-       Show_Card_ID(readUid);
+       Show_Card_ID(*readUid);
         if (!strncmp((char *)readUid, (char *)UID, 4))
         {
             printf("success\r\n");
