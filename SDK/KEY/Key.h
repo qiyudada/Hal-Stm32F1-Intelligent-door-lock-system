@@ -14,6 +14,7 @@
 #include "Delay.h"
 #include "LED.h"
 #include "lcd.h"
+#include "StmFlash.h"
 
 extern int Initation_PS[4];
 

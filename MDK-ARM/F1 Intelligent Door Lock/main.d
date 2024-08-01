@@ -46,7 +46,7 @@ f1 intelligent door lock\main.o: ../SDK/AS608/AS608.h
 f1 intelligent door lock\main.o: ../SDK/LCD/lcd.h
 f1 intelligent door lock\main.o: ../SDK/LCD/lcd_init.h
 f1 intelligent door lock\main.o: ../SDK/KEY/Key.h
+f1 intelligent door lock\main.o: ../SYSTEM/StmFlash.h
 f1 intelligent door lock\main.o: ../SDK/RC522/RC522.h
 f1 intelligent door lock\main.o: ../SDK/HRSR04/HCSR04.h
 f1 intelligent door lock\main.o: ../SDK/BLUETOOTH/HC05.h
-f1 intelligent door lock\main.o: ../SYSTEM/StmFlash.h

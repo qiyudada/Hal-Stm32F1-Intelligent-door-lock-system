@@ -1,7 +1,7 @@
 #include "Key.h"
 
 int Input_PS[4] = {0};				// Input password
-int Initation_PS[4] = {0}; // Initation password
+int Initation_PS[4] = {4, 1, 2, 3}; // Initation password
 int Add_FP[4] = {1, 1, 4, 4};
 /**********************************************************************
  * @name Key_Init
@@ -327,7 +327,7 @@ void KEY_Change(void)
 		{
 			Initation_PS[i] = Temp1_Password[i];
 		}
-		STMFLASH_Write(FLASH_SAVE_ADDR,(uint16_t*)Initation_PS, 8);
+		STMFLASH_Write(FLASH_SAVE_ADDR,(uint16_t)Initation_PS, 4);
 		Delay_ms(2000);
 		LCD_Fill(-10, -10, 240, 240, WHITE);
 		LCD_ShowString(0, 64, "Your Password:", BLACK, WHITE, LCD_8x16, 0);

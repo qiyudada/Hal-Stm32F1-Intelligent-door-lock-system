@@ -43,3 +43,4 @@ f1 intelligent door lock\as608.o: ../Core/Inc/gpio.h
 f1 intelligent door lock\as608.o: ../SDK/Servo/Servo.h
 f1 intelligent door lock\as608.o: ../SDK/AS608/AS608.h
 f1 intelligent door lock\as608.o: ../SDK/LED/LED.h
+f1 intelligent door lock\as608.o: ../SYSTEM/StmFlash.h

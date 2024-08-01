@@ -1,6 +1,8 @@
 #include "StmFlash.h"
 
-FLASH_ProcessTypeDef p_Flash;
+FLASH_ProcessTypeDef p_Flash ={
+    
+};
 
 u16 STMFLASH_BUF[STM_SECTOR_SIZE / 2]; // 缓存数组
 

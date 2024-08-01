@@ -44,4 +44,5 @@ f1 intelligent door lock\stm32f1xx_it.o: ../Core/Inc/gpio.h
 f1 intelligent door lock\stm32f1xx_it.o: ../SDK/Servo/Servo.h
 f1 intelligent door lock\stm32f1xx_it.o: ../SDK/AS608/AS608.h
 f1 intelligent door lock\stm32f1xx_it.o: ../SDK/LED/LED.h
+f1 intelligent door lock\stm32f1xx_it.o: ../SYSTEM/StmFlash.h
 f1 intelligent door lock\stm32f1xx_it.o: ../SDK/BLUETOOTH/HC05.h

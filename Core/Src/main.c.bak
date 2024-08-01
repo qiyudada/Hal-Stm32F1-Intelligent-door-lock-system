@@ -81,6 +81,7 @@ void Door_Open(void)
   LCD_ShowString(20, 64, "Door Open", GREEN, WHITE, LCD_8x16, 0);
   Servo_OpenDoor();
   Delay_ms(5000);
+  LCD_Fill(-10, -10, 240, 240, WHITE);
 }
 void Door_Error(void)
 {
@@ -91,6 +92,7 @@ void Door_Error(void)
   LCD_Fill(-10, -10, 240, 240, WHITE);
   LCD_ShowString(14, 64, "Confirm Error", RED, WHITE, LCD_8x16, 0);
   Delay_ms(1000);
+  LCD_Fill(-10, -10, 240, 240, WHITE);
 }
 
 void Door_Close(void)
@@ -99,7 +101,7 @@ void Door_Close(void)
   LED2_ON();
   LED3_OFF();
   Delay_ms(500);
-  // LCD_Fill(-10, -10, 240, 240, WHITE);
+  //LCD_Fill(-10, -10, 240, 240, WHITE);
   LCD_ShowString(20, 64, "Door Close", BLACK, WHITE, LCD_8x16, 0);
   Servo_CloseDoor();
   Delay_ms(20);
@@ -146,6 +148,8 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
+  /*********Password Initation***************************/
+  STMFLASH_Write(FLASH_SAVE_ADDR,(uint16_t)Initation_PS, 4);
   /*********LCD Initation***************************/
   LCD_Init();
   LCD_Fill(-10, -10, 240, 240, WHITE);
@@ -178,45 +182,53 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-  //   if ((Key_Change_num = Key_GetNum()) != 0)
-  //   {
-  //     Task = 1;
-  //   }
-  //   else if (FP_Touch_Read != RESET)
-  //   {
-  //     Task = 2;
-  //   }
-  //   else if (BlueTooth_RX_STA == SET)
-  //   {
-  //     Task = 3;
-  //   }
-  //   switch (Task)
-  //   {
-  //   case 1:
-  //     KEY_Feedback();
-  //     Task = 0;
-  //     // HCSR04_Detect();
-  //     break;
-  //   case 2:
-  //     FP_Feedback();
-  //     Task = 0;
-  //     // HCSR04_Detect();
-  //     break;
-  //   case 3:
-  //      Bluetooth_Feedback();
-  //     Task = 0;
-  //      // HCSR04_Detect();
-  //     break;
-  //   default:
-  //     Door_Close();
-  //     break;
-  //   }
-  //   /* USER CODE END WHILE */
+    if ((Key_Change_num = Key_GetNum()) != 0)
+    {
+      Task = 1;
+    }
+    else if (FP_Touch_Read != RESET)
+    {
+      Task = 2;
+    }
+    else if (BlueTooth_RX_STA == SET)
+    {
+      Task = 3;
+    }
+    else if (PCD_Request(PICC_REQALL, RC522handle.readUid) == RESET)
+    {
+      Task = 4;
+    }
+    switch (Task)
+    {
+    case 1:
+      KEY_Feedback();
+      Task = 0;
+      // HCSR04_Detect();
+      break;
+    case 2:
+      FP_Feedback();
+      Task = 0;
+      // HCSR04_Detect();
+      break;
+    case 3:
+      Bluetooth_Feedback();
+      Task = 0;
+      // HCSR04_Detect();
+      break;
+    case 4:
+      Card_Feedback();
+      Task = 0;
+      // HCSR04_Detect();
+      break;
+    default:
+      Door_Close();
+      break;
+    }
+    /* USER CODE END WHILE */
 
-  //   /* USER CODE BEGIN 3 */
-  // }
-  PCD_TEST(&RC522handle.readUid);
+    /* USER CODE BEGIN 3 */
   }
+
   /* USER CODE END 3 */
 }
 

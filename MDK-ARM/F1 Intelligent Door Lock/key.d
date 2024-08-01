@@ -43,3 +43,4 @@ f1 intelligent door lock\key.o: ../SDK/LCD/lcd_init.h
 f1 intelligent door lock\key.o: ../Core/Inc/spi.h
 f1 intelligent door lock\key.o: ../SDK/KEY/Key.h
 f1 intelligent door lock\key.o: ../SDK/LED/LED.h
+f1 intelligent door lock\key.o: ../SYSTEM/StmFlash.h

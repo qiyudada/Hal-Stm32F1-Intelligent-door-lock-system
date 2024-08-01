@@ -148,6 +148,9 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
+  /*********Password Initation***************************/
+  //STMFLASH_Write(FLASH_SAVE_ADDR,(uint16_t*)Initation_PS, 8);//First Initation Password write into flash
+  STMFLASH_Read(FLASH_SAVE_ADDR,(uint16_t*)Initation_PS, 8);
   /*********LCD Initation***************************/
   LCD_Init();
   LCD_Fill(-10, -10, 240, 240, WHITE);
