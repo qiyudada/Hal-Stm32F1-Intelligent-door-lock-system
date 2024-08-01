@@ -53,7 +53,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   if (huart == &huart3)
   {
-    HAL_UART_Receive_IT(&BlueTooth_UART, BlueTooth_RX_BUF, sizeof(BlueTooth_RX_BUF)); // �??启中断接收数�??
+    HAL_UART_Receive_IT(&BlueTooth_UART, BlueTooth_RX_BUF, sizeof(BlueTooth_RX_BUF)); 
   }
 }
 
@@ -363,19 +363,11 @@ void USART1_IRQHandler(void)
 void USART2_IRQHandler(void)
 {
   /* USER CODE BEGIN USART2_IRQn 0 */
-  if (__HAL_UART_GET_FLAG(&AS608_UART, UART_FLAG_IDLE) != RESET)
-  {
-    __HAL_UART_CLEAR_IDLEFLAG(&AS608_UART);
-    AS608_UART.RxXferCount = sizeof(AS608_USART_RX_BUF);
-    AS608_UART.pRxBuffPtr = AS608_USART_RX_BUF;
-    USART2_RX_STA = 1;                                                                // 接收数据完成
-    HAL_UART_Receive_IT(&AS608_UART, AS608_USART_RX_BUF, sizeof(AS608_USART_RX_BUF)); // 接收数据，继续产生中�????
-  }
-  else
+ 
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
-
+  HAL_UART2_IdleCpltCallback(&huart2);
   /* USER CODE END USART2_IRQn 1 */
 }
 
@@ -389,7 +381,7 @@ void USART3_IRQHandler(void)
   /* USER CODE END USART3_IRQn 0 */
   HAL_UART_IRQHandler(&huart3);
   /* USER CODE BEGIN USART3_IRQn 1 */
-  HAL_UART_IdleCpltCallback(&huart3);
+  HAL_UART3_IdleCpltCallback(&huart3);
   /* USER CODE END USART3_IRQn 1 */
 }
 

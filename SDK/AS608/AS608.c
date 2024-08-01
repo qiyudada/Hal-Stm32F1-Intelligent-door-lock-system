@@ -791,7 +791,7 @@ uint16_t Press_FR(void)
 **********************************************************************************/
 void Add_FR(void)
 {
-	uint8_t i=0, ensure, processnum = 0;
+	uint8_t i = 0, ensure, processnum = 0;
 	uint8_t ID_NUM = 0;
 	while (1)
 	{
@@ -1001,5 +1001,22 @@ void FP_Feedback(void)
 	{
 		Door_Error();
 		LCD_Fill(-10, -10, 240, 240, WHITE);
+	}
+}
+/*********************************************************************************
+ @name  	HAL_UART_IdleCpltCallback
+ @param 	UART_HandleTypeDef *huart UART handle
+ @note 		a callback function
+ @return  	None
+**********************************************************************************/
+void HAL_UART2_IdleCpltCallback(UART_HandleTypeDef *huart)
+{
+	if (__HAL_UART_GET_FLAG(&AS608_UART, UART_FLAG_IDLE) != RESET)
+	{
+		__HAL_UART_CLEAR_IDLEFLAG(&AS608_UART);
+		AS608_UART.pRxBuffPtr = AS608_USART_RX_BUF;
+		AS608_UART.RxXferCount = sizeof(AS608_USART_RX_BUF);	
+		USART2_RX_STA = 1;
+		HAL_UART_Receive_IT(&AS608_UART, AS608_USART_RX_BUF, sizeof(AS608_USART_RX_BUF));
 	}
 }

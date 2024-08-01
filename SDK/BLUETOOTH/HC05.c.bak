@@ -62,8 +62,7 @@ void HAL_UART3_IdleCpltCallback(UART_HandleTypeDef *huart)
         __HAL_UART_CLEAR_IDLEFLAG(&BlueTooth_UART);
         BlueTooth_UART.RxXferCount = sizeof(BlueTooth_RX_BUF);
         BlueTooth_UART.pRxBuffPtr = BlueTooth_RX_BUF;
-        BlueTooth_RX_STA = 1;
-        BlueTooth_State = BlueTooth_RX_BUF_Check(BlueTooth_RX_BUF);
+        BlueTooth_State = BlueTooth_RX_BUF_Check(BlueTooth_UART);
         HAL_UART_Transmit(&BlueTooth_UART, BlueTooth_RX_BUF, sizeof(BlueTooth_RX_BUF), 1000); // Test for pc
         Blue_Buffer_Clear();
     }
@@ -74,63 +73,47 @@ void Bluetooth_Feedback(void)
     if (BlueTooth_State == BlueTooth_Door_Open)
     {
         BlueTooth_State = 0;
-        BlueTooth_RX_STA = 0;
         Door_Open();
         LCD_Fill(-10, -10, 240, 240, WHITE);
     }
     else if (BlueTooth_State == BlueTooth_Door_Close)
     {
         BlueTooth_State = 0;
-        BlueTooth_RX_STA = 0;
         Door_Close();
         LCD_Fill(-10, -10, 240, 240, WHITE);
     }
     else if (BlueTooth_State == BlueTooth_LED_Red_On)
     {
         BlueTooth_State = 0;
-        BlueTooth_RX_STA = 0;
-        LED1_ON();
-        LCD_Fill(-10, -10, 240, 240, WHITE);
+        LED_Red_On();
     }
     else if (BlueTooth_State == BlueTooth_LED_Red_Off)
     {
         BlueTooth_State = 0;
-        BlueTooth_RX_STA = 0;
-        LED1_OFF();
-        LCD_Fill(-10, -10, 240, 240, WHITE);
+        LED_Red_Off();
     }
     else if (BlueTooth_State == BlueTooth_LED_White_On)
     {
         BlueTooth_State = 0;
-        BlueTooth_RX_STA = 0;
-        LED2_ON();
-        LCD_Fill(-10, -10, 240, 240, WHITE);
+        LED_White_On();
     }
     else if (BlueTooth_State == BlueTooth_LED_White_Off)
     {
         BlueTooth_State = 0;
-        BlueTooth_RX_STA = 0;
-        LED2_OFF();
-        LCD_Fill(-10, -10, 240, 240, WHITE);
+        LED_White_Off();
     }
     else if (BlueTooth_State == BlueTooth_LED_Green_On)
     {
-        BlueTooth_RX_STA = 0;
-        LED3_ON();
-        LCD_Fill(-10, -10, 240, 240, WHITE);
+        BlueTooth_State = 0;
+        LED_Green_On();
     }
     else if (BlueTooth_State == BlueTooth_LED_Green_Off)
     {
         BlueTooth_State = 0;
-        BlueTooth_RX_STA = 0;
-        LED3_OFF();
-        LCD_Fill(-10, -10, 240, 240, WHITE);
+        LED_Green_Off();
     }
     else
     {
-        BlueTooth_State = 0;
-        BlueTooth_RX_STA = 0;
         Door_Error();
-        LCD_Fill(-10, -10, 240, 240, WHITE);
     }
 }

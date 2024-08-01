@@ -35,3 +35,9 @@ f1 intelligent door lock\hc05.o: ../Core/Inc/main.h
 f1 intelligent door lock\hc05.o: D:\Keil\ARM Start\ARM\ARMCC\Bin\..\include\string.h
 f1 intelligent door lock\hc05.o: D:\Keil\ARM Start\ARM\ARMCC\Bin\..\include\stdio.h
 f1 intelligent door lock\hc05.o: ../SYSTEM/Delay.h
+f1 intelligent door lock\hc05.o: ../SDK/LED/LED.h
+f1 intelligent door lock\hc05.o: ../Core/Inc/gpio.h
+f1 intelligent door lock\hc05.o: ../SDK/Servo/Servo.h
+f1 intelligent door lock\hc05.o: ../SDK/LCD/lcd.h
+f1 intelligent door lock\hc05.o: ../SDK/LCD/lcd_init.h
+f1 intelligent door lock\hc05.o: ../Core/Inc/spi.h

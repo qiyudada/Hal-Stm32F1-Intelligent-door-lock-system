@@ -90,4 +90,6 @@ void Del_FR_Lib(void);
 
 void FP_Feedback(void);
 
+void HAL_UART2_IdleCpltCallback(UART_HandleTypeDef *huart);
+
 #endif

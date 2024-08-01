@@ -736,11 +736,63 @@ uint8_t PCD_Init_RST(void)
     return PCD_OK;
 }
 
+/***************************************************************************************
+ * @name     Show_Card_ID
+ * @note     printf the card ID
+ * @param    uint8_t *readUid
+ * @retval   None
+ ***************************************************************************************/
+void Show_Card_ID(uint8_t *readUid)
+{
+    printf("card id:%x-%x-%x-%x\n", readUid[0], readUid[1], readUid[2], readUid[3]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***************************************************************************************
+ * @name     PCD_TEST
+ * @note     Test
+ * @param    uint8_t *readUid
+ * @retval   None
+ ***************************************************************************************/
 void PCD_TEST(uint8_t *readUid)
 {
     if (!readCard(readUid, NULL))
     {
-        printf("card id:%x-%x-%x-%x\n", readUid[0], readUid[1], readUid[2], readUid[3]);
+       Show_Card_ID(*readUid);
         if (!strncmp((char *)readUid, (char *)UID, 4))
         {
             printf("success\r\n");
@@ -751,124 +803,4 @@ void PCD_TEST(uint8_t *readUid)
         }
     }
 }
-///*********************************************
-// 函数名：StartIDCardTask
-// 功  能：处理ID卡相关功能
-// 形  参：
-// 返回值：
-// 备  注：【ID读卡器】
-// 类型码：06
-//**********************************************/
-// void StartIDcardTask(void const * argument)
-//{
-//     extern uint8_t RxBuffer[32];
-//		uint8_t TxBuffer[32];
-//     char IDcard[10];
-//     char __IDcard[10] = "4ba18a25";
-//     char IDcard__[10] = "3957ee5c";
-//     static int IDCard_Err_Num = 0;
-//     char status = 1;
-//     /*RS522初始化*/
-//     MFRC_Init();
-//     PCD_Reset();
-//     osDelay(350);
 
-//    for(;;)
-//    {
-//        /*获取卡号*/
-//        status = PCD_Request(PICC_REQALL, RxBuffer);//返回值为0，代表寻卡成功；并把卡类型存入tempbuf中
-
-//        if(status == PCD_OK)
-//        {
-//            /*防冲突,返回卡号*/
-//            PCD_Anticoll(RxBuffer);   //把（十六进制）的4个字节卡号存储在数组tempbuf中
-//            sprintf(IDcard, "%x%x%x%x", RxBuffer[0], RxBuffer[1], RxBuffer[2], RxBuffer[3]);
-//            /*****开始进行卡号判断******/
-//            if(strcmp(__IDcard, IDcard) == 0 || strcmp(IDcard__, IDcard) == 0) //卡号判断正确
-//            {
-////                sendmsg(huart1, TxBuffer, "%d,02,06,%s,\r\n", Address, IDcard); //把卡号发给串口1方便调试
-//
-//							HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
-//							HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
-//							HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
-//                IDcard[0] = 0x00; //清空字符串
-////                beep_play();//蜂鸣器鸣叫
-////                Open_Door();//开门
-//            }
-//            else
-//            {
-//                IDCard_Err_Num++;//卡号不匹配，标志位自增
-//
-//							HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
-//							HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
-//							HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
-////                sendmsg(huart1, TxBuffer, "%d,01,06,01,%s,%d\r\n", Address, IDcard, IDCard_Err_Num); //错误，卡号不匹配
-////                beep_ring(1000);//蜂鸣器鸣叫
-//                if(IDCard_Err_Num >= 5) //5次报警
-//                {
-////                    beep_ring(1000);//蜂鸣器鸣叫
-////                    SIM800L_CallNum (my_phone);//拨打电话
-////                    sendmsg(huart1, TxBuffer, "%d,02,06,01,Call phone\r\n", Address); //错误，卡号不匹配，并报警
-//                    IDCard_Err_Num = 0;
-//                }
-
-//            }
-//        }
-//        if(status != PCD_OK)
-//        {
-//            PCD_Reset();
-//        }
-////        osMessagePut(QueWdtHandle, 0x08, 10);
-//        osDelay(300);		GPIOB->CRL &=~ (0XF00000);GPIOB->CRL |=~ (0X100000);  		GPIOB->ODR ^=(1<<5);
-//    }
-//}
-
-// void read_card()
-//{
-//     for(;;)
-//     {
-//         /*获取卡号*/
-//         status = PCD_Request(PICC_REQALL, RxBuffer);//返回值为0，代表寻卡成功；并把卡类型存入tempbuf中
-
-//        if(status == PCD_OK)
-//        {
-//            /*防冲突,返回卡号*/
-//            PCD_Anticoll(RxBuffer);   //把（十六进制）的4个字节卡号存储在数组tempbuf中
-//            sprintf(IDcard, "%x%x%x%x", RxBuffer[0], RxBuffer[1], RxBuffer[2], RxBuffer[3]);
-//            /*****开始进行卡号判断******/
-//            if(strcmp(__IDcard, IDcard) == 0 || strcmp(IDcard__, IDcard) == 0) //卡号判断正确
-//            {
-////                sendmsg(huart1, TxBuffer, "%d,02,06,%s,\r\n", Address, IDcard); //把卡号发给串口1方便调试
-////							HAL_UART_Transmit(&huart1,RxBuffer,8, 100);
-//							HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
-//							HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
-//							HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
-//                IDcard[0] = 0x00; //清空字符串
-////                beep_play();//蜂鸣器鸣叫
-////                Open_Door();//开门
-//            }
-//            else
-//            {
-//                IDCard_Err_Num++;//卡号不匹配，标志位自增
-//							HAL_UART_Transmit(&huart1,RxBuffer,8, 100);
-//							HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
-//							HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
-//							HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
-////                sendmsg(huart1, TxBuffer, "%d,01,06,01,%s,%d\r\n", Address, IDcard, IDCard_Err_Num); //错误，卡号不匹配
-////                beep_ring(1000);//蜂鸣器鸣叫
-//                if(IDCard_Err_Num >= 5) //5次报警
-//                {
-////                    beep_ring(1000);//蜂鸣器鸣叫
-////                    SIM800L_CallNum (my_phone);//拨打电话
-////                    sendmsg(huart1, TxBuffer, "%d,02,06,01,Call phone\r\n", Address); //错误，卡号不匹配，并报警
-//                    IDCard_Err_Num = 0;
-//                }
-
-//            }
-//        }
-//        if(status != PCD_OK)
-//        {
-//            PCD_Reset();
-//        }
-//			}
-//}
