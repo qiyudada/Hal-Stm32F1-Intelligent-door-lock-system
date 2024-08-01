@@ -5,19 +5,23 @@
 #include <stdio.h>
 #include <string.h>
 #include "spi.h"
+
+
 #include "Delay.h"
+#include "lcd.h"
+#include "main.h"
 
 
-#define RC522_CS_GPIO_Port      GPIOB
-#define RC522_CS_Pin            GPIO_PIN_12 
-#define RC522_RST_GPIO_Port     GPIOD
-#define RC522_RST_Pin           GPIO_PIN_11
-#define RC522_IRQ_GPIO_Port     GPIOD
-#define RC522_IRQ_Pin           GPIO_PIN_10
+#define RC522_CS_GPIO_Port GPIOB
+#define RC522_CS_Pin GPIO_PIN_12
+#define RC522_RST_GPIO_Port GPIOD
+#define RC522_RST_Pin GPIO_PIN_11
+#define RC522_IRQ_GPIO_Port GPIOD
+#define RC522_IRQ_Pin GPIO_PIN_10
 
-#define RC522_RST(N)            HAL_GPIO_WritePin(RC522_RST_GPIO_Port, RC522_RST_Pin, N == 1 ? GPIO_PIN_SET : GPIO_PIN_RESET)
-#define RC522_NSS(N)            HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, N == 1 ? GPIO_PIN_SET : GPIO_PIN_RESET)
-#define RC522_IRQ               HAL_GPIO_ReadPin(RC522_IRQ_GPIO_Port, RC522_IRQ_Pin)
+#define RC522_RST(N) HAL_GPIO_WritePin(RC522_RST_GPIO_Port, RC522_RST_Pin, N == 1 ? GPIO_PIN_SET : GPIO_PIN_RESET)
+#define RC522_NSS(N) HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, N == 1 ? GPIO_PIN_SET : GPIO_PIN_RESET)
+#define RC522_IRQ HAL_GPIO_ReadPin(RC522_IRQ_GPIO_Port, RC522_IRQ_Pin)
 
 extern uint8_t UID[5];
 
@@ -147,6 +151,19 @@ char MFRC_CmdFrame(uint8_t cmd, uint8_t *pInData, uint8_t InLenByte, uint8_t *pO
 #define PCD_NOTAGERR (char)(-1) // 无卡
 #define PCD_ERR (char)(-2)      // 出错
 
+typedef struct
+{
+    uint8_t ret; // It is spi after transmit a bit return value for receiving data
+    uint8_t UID[4]; // your card id
+    uint8_t Card_KEYA[6];
+    uint8_t Card_KEYB[6];
+    uint16_t cardType; // 0 or 1
+    uint8_t DATA1[16];
+    uint8_t readUid[4];//A read id buffer
+} RC522InfoTypeDef;
+
+extern RC522InfoTypeDef RC522handle;
+
 /*PCD函数声明*/
 void PCD_Init(void);
 void PCD_Reset(void);
@@ -162,8 +179,12 @@ char PCD_Value(uint8_t mode, uint8_t BlockAddr, uint8_t *pValue);
 char PCD_BakValue(uint8_t sourceBlockAddr, uint8_t goalBlockAddr);
 char PCD_Halt(void);
 void StartIDcardTask(void const *argument);
-uint8_t readCard(uint8_t *readUid,void(*funCallBack)(void));
+uint8_t readCard(uint8_t *readUid, void (*funCallBack)(void));
 uint8_t PCD_Init_RST(void);
 void PCD_TEST(uint8_t *readUid);
+void Show_Card_ID(uint8_t *readUid);
+char Card_Write_Read(uint8_t *UID, uint8_t Key_Type, uint8_t *Key, uint8_t RW, uint8_t Address, uint8_t *Data);
+void Card_Feedback(void);
+char Card_Check(void);
 
 #endif

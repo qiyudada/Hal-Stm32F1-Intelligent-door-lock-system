@@ -35,3 +35,5 @@ f1 intelligent door lock\rc522.o: D:\Keil\ARM Start\ARM\ARMCC\Bin\..\include\str
 f1 intelligent door lock\rc522.o: ../Core/Inc/spi.h
 f1 intelligent door lock\rc522.o: ../Core/Inc/main.h
 f1 intelligent door lock\rc522.o: ../SYSTEM/Delay.h
+f1 intelligent door lock\rc522.o: ../SDK/LCD/lcd.h
+f1 intelligent door lock\rc522.o: ../SDK/LCD/lcd_init.h

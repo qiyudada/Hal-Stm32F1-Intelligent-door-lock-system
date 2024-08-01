@@ -1,7 +1,11 @@
 #include "RC522.h"
 
-static uint8_t ret; // 这些函数是HAL与标准库不同的地方【读写函数】
-uint8_t UID[5] = {0x09, 0xF3, 0x4F, 0xA3};
+RC522InfoTypeDef RC522handle = {
+    .readUid = {0},
+    .UID = {0x09, 0xF3, 0x4F, 0xA3}, // Compiler will add zeros for remaining elements
+    .Card_KEYA = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff},
+    .Card_KEYB = {0x11, 0x11, 0x11, 0x11, 0x11, 0x11},
+    .DATA1 = {0x12, 0x34, 0x56, 0x78, 0x9A, 0x00, 0xff, 0x07, 0x80, 0x29, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}};
 
 /**************************************************************************************
  * 函数名称：MFRC_Init
@@ -26,8 +30,8 @@ void MFRC_Init(void)
 
 uint8_t SPI2_RW_Byte(uint8_t byte)
 {
-    HAL_SPI_TransmitReceive(&hspi2, &byte, &ret, 1, 10); // 把byte 写入，并读出一个值，把它存入ret
-    return ret;                                          // 入口是byte 的地址，读取时用的也是ret地址，一次只写入一个值10
+    HAL_SPI_TransmitReceive(&hspi2, &byte, &RC522handle.ret, 1, 10); // 把byte 写入，并读出一个值，把它存入ret
+    return RC522handle.ret;                                          // 入口是byte 的地址，读取时用的也是ret地址，一次只写入一个值10
 }
 
 /**************************************************************************************
@@ -326,9 +330,9 @@ void PCD_Init(void)
  * 函数名称：PCD_Request
  * 功能描述：寻卡
  * 入口参数： -RequestMode：讯卡方式
- *                             PICC_REQIDL：寻天线区内未进入休眠状态
- *                 PICC_REQALL：寻天线区内全部卡
- *               -pCardType：用于保存卡片类型
+ *            PICC_REQIDL：寻天线区内未进入休眠状态
+ *            PICC_REQALL(0x52)：寻天线区内全部卡
+ *           -pCardType：用于保存卡片类型
  * 出口参数：-pCardType：卡片类型
  *                               0x4400：Mifare_UltraLight
  *                       0x0400：Mifare_One(S50)
@@ -747,40 +751,182 @@ void Show_Card_ID(uint8_t *readUid)
     printf("card id:%x-%x-%x-%x\n", readUid[0], readUid[1], readUid[2], readUid[3]);
 }
 
+/***************************************************************************************
+ * @name     Card_Write_Read
+ * @note     A gross test of the card read and write function
+ * @param    uint8_t UID  : your card ID
+ * @param    uint8_t Key_Type : Key type for choosing KeyA or KeyB(0:KeyA, 1:KeyB)
+ * @param    uint8_t *Key   : Key for authentication (your set key password 0->Card_KEYA,1->Card_KEYB)
+ * @param    uint8_t RW     : 1:read, 0:write
+ * @param    uint8_t Address: Block address for read or write
+ * @param    uint8_t *Data : Data for read or write
+ * @retval   state
+ ***************************************************************************************/
+char Card_Write_Read(uint8_t *UID, uint8_t Key_Type, uint8_t *Key, uint8_t RW, uint8_t Address, uint8_t *Data)
+{
+    char state = PCD_NOTAGERR;
+    uint8_t i = 0;
+    uint8_t Temp_ID[4] = {0};
 
+    if (PCD_Request(PICC_REQALL, Temp_ID) == PCD_OK)
+    {
+        if (PCD_Anticoll(Temp_ID) == PCD_OK)
+        {
+            if (PCD_Select(UID) == PCD_OK)
+            {
+                if (Key_Type == 0)
+                {
+                    if (PCD_AuthState(PICC_AUTHENT1A, Address, Key, UID) == PCD_OK)
+                    {
+                        printf("KEY MATCH\r\n");
+                        state = PCD_OK;
+                    }
+                    else
+                    {
+                        state = PCD_ERR;
+                        printf("KEY NO MATCH\r\n");
+                        return state;
+                    }
+                }
+                else
+                {
+                    if (PCD_AuthState(PICC_AUTHENT1B, Address, Key, UID) == PCD_OK)
+                    {
+                        printf("KEY MATCH\r\n");
+                        state = PCD_OK;
+                    }
+                    else
+                    {
+                        printf("KEY NO MATCH\r\n");
+                        state = PCD_ERR;
+                        return state;
+                    }
+                }
+            }
+            else
+            {
+                state = PCD_ERR;
+                printf("UID doesn't match\r\n");
+                return state;
+            }
+        }
+        else
+        {
+            state = PCD_ERR;
+            printf("PCD_Anticoll error\n");
+            return state;
+        }
+    }
+    if (RW && (state == PCD_OK))
+    {
+        if (PCD_ReadBlock(Address, Data) == PCD_OK)
+        {
+            printf("data:");
+            for (i = 0; i < 16; i++)
+            {
+                printf("%02x", Data[i]);
+            }
+            printf("\r\n");
+        }
+        else
+        {
+            state = PCD_ERR;
+            printf("PcdRead failed\r\n");
+            return state;
+        }
+    }
+    else
+    {
+        if (PCD_WriteBlock(Address, Data) == PCD_OK)
+        {
+            printf("PcdWrite finished\r\n");
+        }
+        else
+        {
+            state = PCD_ERR;
+            printf("PcdWrite failed\r\n");
+            return state;
+        }
+    }
+    if (PCD_Halt() == PCD_OK)
+    {
+        state = PCD_OK;
+        printf("PcdHalt finished\r\n");
+        return state;
+    }
+    else
+    {
+        state = PCD_ERR;
+        printf("PcdHalt failed\r\n");
+        return state;
+    }
+}
 
+void Card_Feedback(void)
+{
+    LCD_Fill(-10, -10, 240, 240, WHITE);
+    LCD_ShowString(24, 64, "Verify ID...", BLACK, WHITE, LCD_8x16, 0);
+    Delay_ms(200);
+    if (Card_Check() == PCD_OK)
+    {
+        LCD_Fill(-10, -10, 240, 240, WHITE);
+        Door_Open();
+    }
+    else
+    {
+        LCD_Fill(-10, -10, 240, 240, WHITE);
+        Door_Error();
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+char Card_Check(void)
+{
+    if (PCD_Anticoll(RC522handle.readUid) == PCD_OK)
+    {
+        if (PCD_Select(RC522handle.UID) == PCD_OK)
+        {
+            if (PCD_AuthState(PICC_AUTHENT1A, 0x0B, RC522handle.Card_KEYA, RC522handle.UID) == PCD_OK)
+            {
+                printf("KEY MATCH\r\n");
+                if (PCD_ReadBlock(0x08, RC522handle.DATA1) == PCD_OK)
+                {
+                    LCD_Fill(-10, -10, 240, 240, WHITE);
+                    LCD_ShowString(30, 64, "ID PASS", BLACK, WHITE, LCD_8x16, 0);
+                    Delay_ms(500);
+                    return PCD_OK;
+                }
+                else
+                {
+                    LCD_Fill(-10, -10, 240, 240, WHITE);
+                    LCD_ShowString(30, 64, "ID ERROR", BLACK, WHITE, LCD_8x16, 0);
+                    Delay_ms(500);
+                    return PCD_ERR;
+                }
+            }
+            else
+            {
+                LCD_Fill(-10, -10, 240, 240, WHITE);
+                LCD_ShowString(30, 64, "ID ERROR", BLACK, WHITE, LCD_8x16, 0);
+                Delay_ms(500);
+                return PCD_ERR;
+            }
+        }
+        else
+        {
+            LCD_Fill(-10, -10, 240, 240, WHITE);
+            LCD_ShowString(30, 64, "Unknown ID", BLACK, WHITE, LCD_8x16, 0);
+            Delay_ms(500);
+            return PCD_ERR;
+        }
+    }
+    else
+    {
+        LCD_Fill(-10, -10, 240, 240, WHITE);
+        LCD_ShowString(30, 64, "ID ANTI", BLACK, WHITE, LCD_8x16, 0);
+        Delay_ms(500);
+        return PCD_ERR;
+    }
+}
 
 /***************************************************************************************
  * @name     PCD_TEST
@@ -792,8 +938,8 @@ void PCD_TEST(uint8_t *readUid)
 {
     if (!readCard(readUid, NULL))
     {
-       Show_Card_ID(readUid);
-        if (!strncmp((char *)readUid, (char *)UID, 4))
+        Show_Card_ID(readUid);
+        if (!strncmp((char *)readUid, (char *)RC522handle.UID, 4))
         {
             printf("success\r\n");
         }
@@ -803,4 +949,3 @@ void PCD_TEST(uint8_t *readUid)
         }
     }
 }
-
