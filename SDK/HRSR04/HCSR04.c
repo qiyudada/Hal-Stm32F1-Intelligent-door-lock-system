@@ -187,7 +187,11 @@ void HCSR04_Kalman_TEST(void)
 	Hcsr04Start();
 	Delay_ms(1000);
 }
-
+/************************************************
+ * @description: HCSR04_Detect
+ * @param void
+ * @retval None
+ *************************************************/
 void HCSR04_Detect(void)
 {
 	while ((Hcsr04Read() < 20))

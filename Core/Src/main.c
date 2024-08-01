@@ -101,7 +101,7 @@ void Door_Close(void)
   LED2_ON();
   LED3_OFF();
   Delay_ms(500);
-  //LCD_Fill(-10, -10, 240, 240, WHITE);
+  // LCD_Fill(-10, -10, 240, 240, WHITE);
   LCD_ShowString(20, 64, "Door Close", BLACK, WHITE, LCD_8x16, 0);
   Servo_CloseDoor();
   Delay_ms(20);
@@ -149,10 +149,11 @@ int main(void)
   MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
   /*********Password Initation***************************/
-  //STMFLASH_Write(FLASH_SAVE_ADDR,(uint16_t*)Initation_PS, 8);//First Initation Password write into flash
-  STMFLASH_Read(FLASH_SAVE_ADDR,(uint16_t*)Initation_PS, 8);
+  // STMFLASH_Write(FLASH_SAVE_ADDR,(uint16_t*)Initation_PS, 8);//First Initation Password write into flash
+  STMFLASH_Read(FLASH_SAVE_ADDR, (uint16_t *)Initation_PS, 8); // Read the password from flash
   /*********LCD Initation***************************/
   LCD_Init();
+  // because of my LCD have some problems or LCD doen't match the specification,so start point which I set negative number
   LCD_Fill(-10, -10, 240, 240, WHITE);
   /***********Servo Initation***********************/
   Servo_Init();
@@ -183,19 +184,19 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if ((Key_Change_num = Key_GetNum()) != 0)
+    if ((Key_Change_num = Key_GetNum()) != 0) // KEY FUNCTION
     {
       Task = 1;
     }
-    else if (FP_Touch_Read != RESET)
+    else if (FP_Touch_Read != RESET) // FINGERPRINT FUNCTION
     {
       Task = 2;
     }
-    else if (BlueTooth_RX_STA == SET)
+    else if (BlueTooth_RX_STA == SET) // BLUETOOTH FUNCTION
     {
       Task = 3;
     }
-    else if (PCD_Request(PICC_REQALL, RC522handle.readUid) == RESET)
+    else if (PCD_Request(PICC_REQALL, RC522handle.readUid) == RESET) // CARD FUNCTION
     {
       Task = 4;
     }
@@ -204,7 +205,7 @@ int main(void)
     case 1:
       KEY_Feedback();
       Task = 0;
-      // HCSR04_Detect();
+      // HCSR04_Detect();//Juage people leave or not to close the door
       break;
     case 2:
       FP_Feedback();

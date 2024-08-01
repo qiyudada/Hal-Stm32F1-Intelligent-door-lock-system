@@ -68,8 +68,8 @@ void STMFLASH_Write(u32 WriteAddr, u16 *pBuffer, u16 NumToWrite)
             Flash_PageErase(secpos * STM_SECTOR_SIZE + STM32_FLASH_BASE); // 擦除这个扇区
             FLASH_WaitForLastOperation(FLASH_WAITETIME);                  // 等待上次操作完成
             CLEAR_BIT(FLASH->CR, FLASH_CR_PER);                           // 清除CR寄存器的PER位，此操作应该在FLASH_PageErase()中完成！
-                                                // 但是HAL库里面并没有做，应该是HAL库bug！
-            for (i = 0; i < secremain; i++) // 复制
+                                                                          // 但是HAL库里面并没有做，应该是HAL库bug！
+            for (i = 0; i < secremain; i++)                               // 复制
             {
                 STMFLASH_BUF[i + secoff] = pBuffer[i];
             }

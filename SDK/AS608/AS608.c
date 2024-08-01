@@ -743,7 +743,7 @@ void ShowErrMessage(uint8_t ensure)
  @name  	press_FR
  @param 	void
  @note 		input fingerprint
- @return  	None
+ @return  	mathscore
 **********************************************************************************/
 uint16_t Press_FR(void)
 {
@@ -778,6 +778,7 @@ uint16_t Press_FR(void)
 			else
 			{
 				printf("Please press finger\r\n");
+				return 0;
 			}
 		}
 	}
@@ -1015,7 +1016,7 @@ void HAL_UART2_IdleCpltCallback(UART_HandleTypeDef *huart)
 	{
 		__HAL_UART_CLEAR_IDLEFLAG(&AS608_UART);
 		AS608_UART.pRxBuffPtr = AS608_USART_RX_BUF;
-		AS608_UART.RxXferCount = sizeof(AS608_USART_RX_BUF);	
+		AS608_UART.RxXferCount = sizeof(AS608_USART_RX_BUF);
 		USART2_RX_STA = 1;
 		HAL_UART_Receive_IT(&AS608_UART, AS608_USART_RX_BUF, sizeof(AS608_USART_RX_BUF));
 	}

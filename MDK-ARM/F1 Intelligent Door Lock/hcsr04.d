@@ -30,6 +30,7 @@ f1 intelligent door lock\hcsr04.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx
 f1 intelligent door lock\hcsr04.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 f1 intelligent door lock\hcsr04.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 f1 intelligent door lock\hcsr04.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+f1 intelligent door lock\hcsr04.o: D:\Keil\ARM Start\ARM\ARMCC\Bin\..\include\stdio.h
 f1 intelligent door lock\hcsr04.o: ../Core/Inc/tim.h
 f1 intelligent door lock\hcsr04.o: ../Core/Inc/main.h
 f1 intelligent door lock\hcsr04.o: ../SYSTEM/Delay.h

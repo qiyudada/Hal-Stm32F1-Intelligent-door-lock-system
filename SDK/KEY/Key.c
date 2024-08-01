@@ -1,6 +1,6 @@
 #include "Key.h"
 
-int Input_PS[4] = {0};				// Input password
+int Input_PS[4] = {0};	   // Input password
 int Initation_PS[4] = {0}; // Initation password
 int Add_FP[4] = {1, 1, 4, 4};
 /**********************************************************************
@@ -193,14 +193,14 @@ void KEY_Change(void)
 	uint8_t WritePointer = 0;
 	uint8_t CurrentPointer = 0;
 	LCD_Fill(-10, -10, 240, 240, WHITE);
-	LCD_ShowString(0, 64, "Change Fir Password:", BLACK, WHITE, LCD_8x16, 0);
+	LCD_ShowString(0, 64, "First Password:", BLACK, WHITE, LCD_8x16, 0);
 	/**********First Password*******************/
 	while (Total_Timeout--)
 	{
 		Key_Input = Key_GetNum();
 		if (Key_Input != KEY_NoPRES && Key_Input != KEY_MOVE_PRES && Key_Input != KEY_Confirm)
 		{
-			Temp1_Password[WritePointer] = Key_Input;
+			Temp1_Password[WritePointer] = Key_Input; // writepointer fellow the key input
 			LCD_ShowIntNum(24 + WritePointer * 16, 96, Temp1_Password[WritePointer], 1, BLACK, WHITE, LCD_8x16);
 			Delay_ms(200);
 			LCD_Fill(24 + WritePointer * 16, 96, (24 + WritePointer * 16) + 8, 96 + 16, WHITE);
@@ -210,11 +210,11 @@ void KEY_Change(void)
 			Total_Timeout = Key_Timeout;
 			Key_Input = 0;
 		}
-		if (Key_Input == KEY_MOVE_PRES) // Enter modify mode
+		if (Key_Input == KEY_MOVE_PRES) // Enter modify mode(other input add will be ignored and just change already input)
 		{
-			CurrentPointer = (++CurrentPointer) % 4;
+			CurrentPointer = (++CurrentPointer) % 4; // prevent overflow
 			LCD_ShowChar(24 + CurrentPointer * 16, 112, '^', BLACK, WHITE, LCD_8x16, 0);
-			while (Small_Timeout--)
+			while (Small_Timeout--) // No control will be exit
 			{
 				Key_Input = Key_GetNum();
 				if (Key_Input == KEY_MOVE_PRES)
@@ -223,7 +223,7 @@ void KEY_Change(void)
 					LCD_Fill(24 + CurrentPointer * 16, 112, (24 + CurrentPointer * 16) + 8, 112 + 16, WHITE);
 					CurrentPointer = (++CurrentPointer) % 4;
 					LCD_ShowChar(24 + CurrentPointer * 16, 112, '^', BLACK, WHITE, LCD_12x24, 0);
-					Small_Timeout = Key_Delay;
+					Small_Timeout = Key_Delay; // reset time
 					Key_Input = Key_GetNum();
 				}
 				if (Key_Input != KEY_NoPRES && Key_Input != KEY_MOVE_PRES && Key_Input != KEY_Confirm && Temp1_Password[CurrentPointer] != 0)
@@ -258,7 +258,7 @@ void KEY_Change(void)
 	}
 	/**********Second Password*******************/
 	LCD_Fill(-10, -10, 240, 240, WHITE);
-	LCD_ShowString(0, 64, "Change Sec Password:", BLACK, WHITE, LCD_8x16, 0);
+	LCD_ShowString(0, 64, "Second Password:", BLACK, WHITE, LCD_8x16, 0);
 	while (Total_Timeout--) // twice input
 	{
 		LCD_Fill(0, 112, 240, 112 + 16, WHITE);
@@ -319,15 +319,15 @@ void KEY_Change(void)
 			break;
 		}
 	}
-	if (memcmp(Temp1_Password, Temp2_Password, sizeof(Temp1_Password)) == 0)
+	if (memcmp(Temp1_Password, Temp2_Password, sizeof(Temp1_Password)) == 0) // Compare the two passwords
 	{
 		LCD_Fill(0, 64, 240, 80, WHITE);
 		LCD_ShowString(0, 64, "Change Success!", BLACK, WHITE, LCD_8x16, 0);
 		for (int i = 0; i < 4; i++)
 		{
-			Initation_PS[i] = Temp1_Password[i];
+			Initation_PS[i] = Temp1_Password[i]; // Save the password
 		}
-		STMFLASH_Write(FLASH_SAVE_ADDR,(uint16_t*)Initation_PS, 8);
+		STMFLASH_Write(FLASH_SAVE_ADDR, (uint16_t *)Initation_PS, 8); // write to flash
 		Delay_ms(2000);
 		LCD_Fill(-10, -10, 240, 240, WHITE);
 		LCD_ShowString(0, 64, "Your Password:", BLACK, WHITE, LCD_8x16, 0);

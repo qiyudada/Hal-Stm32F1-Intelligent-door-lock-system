@@ -3,6 +3,7 @@
 uint8_t USART3_RX_BUF[USART3_BUFFER_MAX] = {0};
 uint8_t USART3_RX_STA = 0;
 static int BlueTooth_State;
+
 void BlueTooth_Init(void)
 {
     HAL_UART_Receive_DMA(&BlueTooth_UART, BlueTooth_RX_BUF, sizeof(BlueTooth_RX_BUF)); // 开启中断接收数据
@@ -11,35 +12,35 @@ void BlueTooth_Init(void)
 
 int BlueTooth_RX_BUF_Check(uint8_t *Blue_Rx_Buffer)
 {
-    if (strcmp(Blue_Rx_Buffer, "dooropen") == 0)
+    if (strcmp((char*)Blue_Rx_Buffer, "dooropen") == 0)
     {
         return BlueTooth_Door_Open;
     }
-    else if (strcmp(Blue_Rx_Buffer, "doorclose") == 0)
+    else if (strcmp((char*)Blue_Rx_Buffer, "doorclose") == 0)
     {
         return BlueTooth_Door_Close;
     }
-    else if (strcmp(Blue_Rx_Buffer, "ledredon") == 0)
+    else if (strcmp((char*)Blue_Rx_Buffer, "ledredon") == 0)
     {
         return BlueTooth_LED_Red_On;
     }
-    else if (strcmp(Blue_Rx_Buffer, "ledredoff") == 0)
+    else if (strcmp((char*)Blue_Rx_Buffer, "ledredoff") == 0)
     {
         return BlueTooth_LED_Red_Off;
     }
-    else if (strcmp(Blue_Rx_Buffer, "ledwhiteon") == 0)
+    else if (strcmp((char*)Blue_Rx_Buffer, "ledwhiteon") == 0)
     {
         return BlueTooth_LED_White_On;
     }
-    else if (strcmp(Blue_Rx_Buffer, "ledwhiteoff") == 0)
+    else if (strcmp((char*)Blue_Rx_Buffer, "ledwhiteoff") == 0)
     {
         return BlueTooth_LED_White_Off;
     }
-    else if (strcmp(Blue_Rx_Buffer, "ledgreenon") == 0)
+    else if (strcmp((char*)Blue_Rx_Buffer, "ledgreenon") == 0)
     {
         return BlueTooth_LED_Green_On;
     }
-    else if (strcmp(Blue_Rx_Buffer, "ledgreenoff") == 0)
+    else if (strcmp((char*)Blue_Rx_Buffer, "ledgreenoff") == 0)
     {
         return BlueTooth_LED_Green_Off;
     }

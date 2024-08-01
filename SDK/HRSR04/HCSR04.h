@@ -2,6 +2,8 @@
 #define __HCSR04_H
 
 #include "stm32f1xx_hal.h"
+#include <stdio.h>
+
 #include "tim.h"
 #include "Delay.h"
 

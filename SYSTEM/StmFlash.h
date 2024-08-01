@@ -24,6 +24,7 @@ typedef __IO uint16_t vu16;
 #define STM32_FLASH_WREN 1                                                         // 使能FLASH写入(0，不是能;1，使能)
 #define FLASH_WAITETIME 50000                                                      // FLASH等待超时时间
 
+/*******************FLASH function***************************************/
 u8 STMFLASH_GetStatus(void);                                         // 获得状态
 u8 STMFLASH_WaitDone(u16 time);                                      // 等待操作结束
 u8 STMFLASH_ErasePage(u32 paddr);                                    // 擦除页

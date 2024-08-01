@@ -34,7 +34,6 @@ typedef enum
 extern uint8_t BlueTooth_RX_BUF[USART3_BUFFER_MAX];
 extern uint8_t BlueTooth_RX_STA;
 
-
 void BlueTooth_Init(void);
 void Blue_Buffer_Clear(void);
 int BlueTooth_RX_BUF_Check(uint8_t *Blue_Rx_Buffer);

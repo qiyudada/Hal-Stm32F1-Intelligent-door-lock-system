@@ -861,7 +861,12 @@ char Card_Write_Read(uint8_t *UID, uint8_t Key_Type, uint8_t *Key, uint8_t RW, u
         return state;
     }
 }
-
+/***************************************************************************************
+ * @name     Card_Feedback
+ * @note     Using card to open door
+ * @param    None
+ * @retval   None
+ ***************************************************************************************/
 void Card_Feedback(void)
 {
     LCD_Fill(-10, -10, 240, 240, WHITE);
@@ -878,7 +883,12 @@ void Card_Feedback(void)
         Door_Error();
     }
 }
-
+/***************************************************************************************
+ * @name     Card_Check
+ * @note     Card Check
+ * @param    None
+ * @retval   state
+ ***************************************************************************************/
 char Card_Check(void)
 {
     if (PCD_Anticoll(RC522handle.readUid) == PCD_OK)
