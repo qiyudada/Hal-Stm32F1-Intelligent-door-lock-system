@@ -20,5 +20,6 @@
         "lcd.h": "c",
         "stm32f1xx_it.h": "c",
         "stmflash.h": "c"
-    }
+    },
+    "files.autoSave": "afterDelay"
 }

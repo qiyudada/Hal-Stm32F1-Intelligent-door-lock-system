@@ -157,7 +157,7 @@
           <Type>0</Type>
           <LineNumber>68</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134243278</Address>
+          <Address>134243962</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -167,22 +167,6 @@
           <Filename>..\SDK\KEY\Key.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\F1_Intelligent_Door_Lock\../SDK/KEY/Key.c\68</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>868</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134222506</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\SDK\RC522\RC522.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\F1_Intelligent_Door_Lock\../SDK/RC522/RC522.c\868</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -711,7 +695,7 @@
 
   <Group>
     <GroupName>LCD</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
