@@ -1,11 +1,11 @@
 # Hal-Stm32F1-Intelligent-door-lock-system
- ## A Intelligent door lock system which using Stm32F103VET6 based on Hal bank 
+ ## A Intelligent door lock system which using Stm32F103ZET6 based on Hal bank 
 
 ### 1.Work show
 
 ![46a0bad7f95915147ae3c839b3f1e874](C:\Users\Lenovo\Desktop\My FreeRtos\Hal-Stm32F1-Intelligent-door-lock-system\46a0bad7f95915147ae3c839b3f1e874.jpg)
 
-### 2.Some bugs I meet
+### 2.Some bugs I meet on
 
 #### 1. AS608 Data packet don’t update and be covered by new data
 
