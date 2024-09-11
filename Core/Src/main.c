@@ -173,7 +173,7 @@ int main(void)
   /***********Ultrasonic Initation***********************/
   Hcsr04Init(&htim5, HCSR04_CHANNEL);
   Hcsr04Start();
-  printf("RC522 Initation Completed\r\n");
+  printf("Hcsr04 Initation Completed\r\n");
   /***********BlueTooth Initation***********************/
   BlueTooth_Init();
   printf("BlueTooth Initation Completed\r\n");
